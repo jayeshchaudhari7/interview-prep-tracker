@@ -52,6 +52,7 @@ const QuestionTracker = () => {
   // Add or update question
   const handleSaveQuestion = (questionData) => {
     if (editingQuestion) {
+      
       setQuestions((previousQuestions) =>
         previousQuestions.map((question) =>
           question.id === editingQuestion.id
@@ -103,37 +104,15 @@ const QuestionTracker = () => {
 
   // Filtering
   const filteredQuestions = useMemo(() => {
-    return questions.filter((question) => {
-      const matchesSearch = question.title
-        .toLowerCase()
-        .includes(search.toLowerCase());
-
-      const matchesCategory =
-        category === "All Categories" ||
-        question.category === category;
-
-      const matchesStatus =
-        status === "All Status" ||
-        question.status === status;
-
-      const matchesDifficulty =
-        difficulty === "All Difficulties" ||
-        question.difficulty === difficulty;
-
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesStatus &&
-        matchesDifficulty
-      );
-    });
-  }, [
-    questions,
-    search,
-    category,
-    status,
-    difficulty,
-  ]);
+  return questions.filter((question) => {
+    return (
+      question.title.toLowerCase().includes(search.toLowerCase()) &&
+      (category === "All Categories" || question.category === category) &&
+      (status === "All Status" || question.status === status) &&
+      (difficulty === "All Difficulties" || question.difficulty === difficulty)
+    );
+  });
+}, [questions, search, category, status, difficulty]);
 
   const openAddModal = () => {
     setEditingQuestion(null);
